@@ -49,12 +49,12 @@ public class MainFrame extends javax.swing.JFrame {
         ProgressBar = new javax.swing.JProgressBar();
         TreeScrollPane = new javax.swing.JScrollPane();
         SongsTree = new javax.swing.JTree();
-        TextScrollPane = new javax.swing.JScrollPane();
-        SongText = new javax.swing.JTextPane();
         Grabar = new javax.swing.JButton();
         Guardar = new javax.swing.JButton();
         Reproducir = new javax.swing.JButton();
         Pausar = new javax.swing.JButton();
+        TextScrollPane = new javax.swing.JScrollPane();
+        SongText = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,8 +68,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         TreeScrollPane.setViewportView(SongsTree);
-
-        TextScrollPane.setViewportView(SongText);
 
         Grabar.setText("Grabar Canción");
         Grabar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -98,6 +96,10 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         Pausar.setText("Pausar Canción");
+
+        SongText.setColumns(20);
+        SongText.setRows(5);
+        TextScrollPane.setViewportView(SongText);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,8 +138,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(TreeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(TextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TextScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Grabar)
                             .addComponent(Guardar)
@@ -156,6 +158,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void GrabarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GrabarMouseClicked
         JOptionPane.showMessageDialog(this, "Recording Starting");
+        
     }//GEN-LAST:event_GrabarMouseClicked
 
     private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
@@ -194,11 +197,18 @@ public class MainFrame extends javax.swing.JFrame {
         String selected = SongsTree.getLastSelectedPathComponent().toString();
         AdminCancion ac = new AdminCancion("./Canciones.sng");
         ac.cargarArchivo();
+        Cancion current = new Cancion();
         for (int i = 0; i < ac.getListaCanciones().size(); i++) {
             if (ac.getListaCanciones().get(i).getNombre().equals(selected)) {
                 LabelPlayingNow.setText(ac.getListaCanciones().get(i).getNombre());
+                current = ac.getListaCanciones().get(i);
             }
         }
+        
+        HiloPlaying hp = new HiloPlaying(ProgressBar, current.getLetra(), SongText);
+        Thread proceso1 = new Thread(hp);
+        proceso1.start();
+        
     }//GEN-LAST:event_ReproducirMouseClicked
 
     public void CargarArbol() throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -274,7 +284,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton Pausar;
     private javax.swing.JProgressBar ProgressBar;
     private javax.swing.JButton Reproducir;
-    private javax.swing.JTextPane SongText;
+    private javax.swing.JTextArea SongText;
     private javax.swing.JTree SongsTree;
     private javax.swing.JScrollPane TextScrollPane;
     private javax.swing.JScrollPane TreeScrollPane;

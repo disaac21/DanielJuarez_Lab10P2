@@ -63,8 +63,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="TreeScrollPane" pref="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="TextScrollPane" min="-2" pref="150" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="TextScrollPane" min="-2" pref="155" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="Grabar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="Guardar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -106,17 +106,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JScrollPane" name="TextScrollPane">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JTextPane" name="SongText">
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JButton" name="Grabar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Grabar Canci&#xf3;n"/>
@@ -147,5 +136,20 @@
         <Property name="text" type="java.lang.String" value="Pausar Canci&#xf3;n"/>
       </Properties>
     </Component>
+    <Container class="javax.swing.JScrollPane" name="TextScrollPane">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="SongText">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>
