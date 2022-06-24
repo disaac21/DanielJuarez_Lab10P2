@@ -5,9 +5,16 @@
  */
 package danieljuarez_lab10p2;
 
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -24,8 +31,9 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
+    public MainFrame() throws IOException, FileNotFoundException, ClassNotFoundException {
         initComponents();
+        CargarArbol();
     }
 
     /**
@@ -193,9 +201,31 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ReproducirMouseClicked
 
-    
-    
-    
+    public void CargarArbol() throws FileNotFoundException, IOException, ClassNotFoundException {
+        AdminCancion ac = new AdminCancion("./Canciones.sng");
+        ac.cargarArchivo();
+        Cancion temp;
+            FileInputStream entrada
+                    = new FileInputStream("./Canciones.sng");
+            ObjectInputStream objeto
+                    = new ObjectInputStream(entrada);
+            DefaultTreeModel modelo = (DefaultTreeModel) SongsTree.getModel();
+            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+            try {
+                while ((temp = (Cancion) objeto.readObject()) != null) {
+                    DefaultMutableTreeNode nodocategoria = new DefaultMutableTreeNode(temp.getCategoria());
+                    DefaultMutableTreeNode nodocancion = new DefaultMutableTreeNode(temp.getNombre());
+                    raiz.add(nodocategoria);
+                    nodocategoria.add(nodocancion);
+                }
+            } catch (EOFException e) {
+                //encontro el final del archivo
+            }
+            modelo.reload();
+            objeto.close();
+            entrada.close();
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -226,7 +256,13 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                try {
+                    new MainFrame().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
