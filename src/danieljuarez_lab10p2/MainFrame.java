@@ -99,6 +99,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         SongText.setColumns(20);
         SongText.setRows(5);
+        SongText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                SongTextKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                SongTextKeyTyped(evt);
+            }
+        });
         TextScrollPane.setViewportView(SongText);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -158,7 +166,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void GrabarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GrabarMouseClicked
         JOptionPane.showMessageDialog(this, "Recording Starting");
-        
+
     }//GEN-LAST:event_GrabarMouseClicked
 
     private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
@@ -204,36 +212,46 @@ public class MainFrame extends javax.swing.JFrame {
                 current = ac.getListaCanciones().get(i);
             }
         }
-        
+
         HiloPlaying hp = new HiloPlaying(ProgressBar, current.getLetra(), SongText);
         Thread proceso1 = new Thread(hp);
         proceso1.start();
-        
+
     }//GEN-LAST:event_ReproducirMouseClicked
+
+    private void SongTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SongTextKeyPressed
+       
+    }//GEN-LAST:event_SongTextKeyPressed
+
+    private void SongTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SongTextKeyTyped
+        HiloTyping hp = new HiloTyping(ProgressBar, SongText, evt);
+        Thread proceso1 = new Thread(hp);
+        proceso1.start();
+    }//GEN-LAST:event_SongTextKeyTyped
 
     public void CargarArbol() throws FileNotFoundException, IOException, ClassNotFoundException {
         AdminCancion ac = new AdminCancion("./Canciones.sng");
         ac.cargarArchivo();
         Cancion temp;
-            FileInputStream entrada
-                    = new FileInputStream("./Canciones.sng");
-            ObjectInputStream objeto
-                    = new ObjectInputStream(entrada);
-            DefaultTreeModel modelo = (DefaultTreeModel) SongsTree.getModel();
-            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
-            try {
-                while ((temp = (Cancion) objeto.readObject()) != null) {
-                    DefaultMutableTreeNode nodocategoria = new DefaultMutableTreeNode(temp.getCategoria());
-                    DefaultMutableTreeNode nodocancion = new DefaultMutableTreeNode(temp.getNombre());
-                    raiz.add(nodocategoria);
-                    nodocategoria.add(nodocancion);
-                }
-            } catch (EOFException e) {
-                //encontro el final del archivo
+        FileInputStream entrada
+                = new FileInputStream("./Canciones.sng");
+        ObjectInputStream objeto
+                = new ObjectInputStream(entrada);
+        DefaultTreeModel modelo = (DefaultTreeModel) SongsTree.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+        try {
+            while ((temp = (Cancion) objeto.readObject()) != null) {
+                DefaultMutableTreeNode nodocategoria = new DefaultMutableTreeNode(temp.getCategoria());
+                DefaultMutableTreeNode nodocancion = new DefaultMutableTreeNode(temp.getNombre());
+                raiz.add(nodocategoria);
+                nodocategoria.add(nodocancion);
             }
-            modelo.reload();
-            objeto.close();
-            entrada.close();
+        } catch (EOFException e) {
+            //encontro el final del archivo
+        }
+        modelo.reload();
+        objeto.close();
+        entrada.close();
     }
 
     /**
