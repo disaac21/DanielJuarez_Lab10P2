@@ -1,11 +1,15 @@
 package danieljuarez_lab10p2;
 
-public class Cancion {
+import java.io.Serializable;
+
+public class Cancion implements Serializable {
     
     public String Nombre;
     public String Categoria;
     public String Letra;
 
+    private static final long SerialVersionUID=777L;
+    
     public Cancion() {
     }
 
@@ -41,7 +45,7 @@ public class Cancion {
 
     @Override
     public String toString() {
-        return "Nombre: " + Nombre + "\nCategoria: " + Categoria + "\nLetra: " + Letra + "\n";
+        return Nombre;
     }
     
 }

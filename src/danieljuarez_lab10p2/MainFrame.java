@@ -5,7 +5,15 @@
  */
 package danieljuarez_lab10p2;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 
 /**
  *
@@ -46,6 +54,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Canciones");
         SongsTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        SongsTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SongsTreeMouseClicked(evt);
+            }
+        });
         TreeScrollPane.setViewportView(SongsTree);
 
         TextScrollPane.setViewportView(SongText);
@@ -63,6 +76,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         Guardar.setText("Guardar Canción");
+        Guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GuardarMouseClicked(evt);
+            }
+        });
 
         Reproducir.setText("Reproducir Canción");
 
@@ -126,6 +144,39 @@ public class MainFrame extends javax.swing.JFrame {
     private void GrabarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GrabarMouseClicked
         JOptionPane.showMessageDialog(this, "Recording Starting");
     }//GEN-LAST:event_GrabarMouseClicked
+
+    private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
+        
+        String Nombre = JOptionPane.showInputDialog(this, "Ingrese el Nombre de la Cancion");
+        String Categoria = JOptionPane.showInputDialog(this, "Ingrese la Categoria");
+        String Letra = SongText.getText();
+
+        Cancion newsong = new Cancion(Nombre, Categoria, Letra);
+        
+        AdminCancion ac = new AdminCancion("./Canciones.sng");
+        ac.cargarArchivo();
+        ac.setCancion(newsong);
+        ac.escribirArchivo();
+        JOptionPane.showMessageDialog(this,
+                "Alumno guardado exitosamente");
+        SongText.setText("");
+        
+//        DefaultTreeModel modelo = (DefaultTreeModel) SongsTree.getModel();
+//        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+//        DefaultMutableTreeNode nodocategoria = new DefaultMutableTreeNode(Categoria);
+//        DefaultMutableTreeNode  nodocancion = new DefaultMutableTreeNode(newsong);
+//        
+//        raiz.add(nodocategoria);
+//        nodocategoria.add(nodocancion);
+//        modelo.reload();
+
+    }//GEN-LAST:event_GuardarMouseClicked
+
+    private void SongsTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SongsTreeMouseClicked
+        
+        SongsTree.getSelectionPath();
+        
+    }//GEN-LAST:event_SongsTreeMouseClicked
 
     /**
      * @param args the command line arguments
