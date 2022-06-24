@@ -13,6 +13,9 @@ public class AdminCancion {
     private ArrayList<Cancion> ListaCanciones = new ArrayList();
     private File archivo = null;
 
+    public AdminCancion() {
+    }
+    
     public AdminCancion (String path) {
         archivo = new File(path);
     }

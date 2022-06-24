@@ -138,6 +138,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Reproducir Canci&#xf3;n"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ReproducirMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="Pausar">
       <Properties>

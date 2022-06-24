@@ -83,6 +83,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         Reproducir.setText("Reproducir Canción");
+        Reproducir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ReproducirMouseClicked(evt);
+            }
+        });
 
         Pausar.setText("Pausar Canción");
 
@@ -146,13 +151,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_GrabarMouseClicked
 
     private void GuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GuardarMouseClicked
-        
+
         String Nombre = JOptionPane.showInputDialog(this, "Ingrese el Nombre de la Cancion");
         String Categoria = JOptionPane.showInputDialog(this, "Ingrese la Categoria");
         String Letra = SongText.getText();
 
         Cancion newsong = new Cancion(Nombre, Categoria, Letra);
-        
+
         AdminCancion ac = new AdminCancion("./Canciones.sng");
         ac.cargarArchivo();
         ac.setCancion(newsong);
@@ -160,24 +165,37 @@ public class MainFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this,
                 "Alumno guardado exitosamente");
         SongText.setText("");
-        
-//        DefaultTreeModel modelo = (DefaultTreeModel) SongsTree.getModel();
-//        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
-//        DefaultMutableTreeNode nodocategoria = new DefaultMutableTreeNode(Categoria);
-//        DefaultMutableTreeNode  nodocancion = new DefaultMutableTreeNode(newsong);
-//        
-//        raiz.add(nodocategoria);
-//        nodocategoria.add(nodocancion);
-//        modelo.reload();
+
+        DefaultTreeModel modelo = (DefaultTreeModel) SongsTree.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+        DefaultMutableTreeNode nodocategoria = new DefaultMutableTreeNode(Categoria);
+        DefaultMutableTreeNode nodocancion = new DefaultMutableTreeNode(newsong);
+
+        raiz.add(nodocategoria);
+        nodocategoria.add(nodocancion);
+        modelo.reload();
 
     }//GEN-LAST:event_GuardarMouseClicked
 
     private void SongsTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SongsTreeMouseClicked
-        
-        SongsTree.getSelectionPath();
-        
+
     }//GEN-LAST:event_SongsTreeMouseClicked
 
+    private void ReproducirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReproducirMouseClicked
+        System.out.println(SongsTree.getLastSelectedPathComponent());
+        String selected = SongsTree.getLastSelectedPathComponent().toString();
+        AdminCancion ac = new AdminCancion("./Canciones.sng");
+        ac.cargarArchivo();
+        for (int i = 0; i < ac.getListaCanciones().size(); i++) {
+            if (ac.getListaCanciones().get(i).getNombre().equals(selected)) {
+                LabelPlayingNow.setText(ac.getListaCanciones().get(i).getNombre());
+            }
+        }
+    }//GEN-LAST:event_ReproducirMouseClicked
+
+    
+    
+    
     /**
      * @param args the command line arguments
      */
